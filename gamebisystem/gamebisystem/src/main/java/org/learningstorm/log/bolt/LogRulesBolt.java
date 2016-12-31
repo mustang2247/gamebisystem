@@ -1,8 +1,13 @@
 package org.learningstorm.log.bolt;
 
-import java.util.Map;
-
 import org.apache.log4j.Logger;
+import org.apache.storm.task.OutputCollector;
+import org.apache.storm.task.TopologyContext;
+import org.apache.storm.topology.OutputFieldsDeclarer;
+import org.apache.storm.topology.base.BaseRichBolt;
+import org.apache.storm.tuple.Fields;
+import org.apache.storm.tuple.Tuple;
+import org.apache.storm.tuple.Values;
 import org.kie.api.io.ResourceType;
 import org.kie.internal.KnowledgeBase;
 import org.kie.internal.KnowledgeBaseFactory;
@@ -13,13 +18,7 @@ import org.kie.internal.runtime.StatelessKnowledgeSession;
 import org.learningstorm.log.common.FieldNames;
 import org.learningstorm.log.model.LogEntry;
 
-import backtype.storm.task.OutputCollector;
-import backtype.storm.task.TopologyContext;
-import backtype.storm.topology.OutputFieldsDeclarer;
-import backtype.storm.topology.base.BaseRichBolt;
-import backtype.storm.tuple.Fields;
-import backtype.storm.tuple.Tuple;
-import backtype.storm.tuple.Values;
+import java.util.Map;
 
 @SuppressWarnings("deprecation")
 public class LogRulesBolt extends BaseRichBolt {
@@ -31,7 +30,6 @@ public class LogRulesBolt extends BaseRichBolt {
 	private OutputCollector collector;
 	
 	@SuppressWarnings({ "rawtypes" })
-	@Override
 	public void prepare(Map stormConf, TopologyContext context,
 			OutputCollector collector) {
 		this.collector = collector;

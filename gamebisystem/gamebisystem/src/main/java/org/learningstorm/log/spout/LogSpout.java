@@ -1,23 +1,23 @@
 package org.learningstorm.log.spout;
 
-import java.util.Map;
-
 import org.apache.log4j.Logger;
+import org.apache.storm.spout.SpoutOutputCollector;
+import org.apache.storm.task.TopologyContext;
+import org.apache.storm.topology.OutputFieldsDeclarer;
+import org.apache.storm.topology.base.BaseRichSpout;
+import org.apache.storm.tuple.Fields;
+import org.apache.storm.tuple.Values;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.learningstorm.log.common.Conf;
 import org.learningstorm.log.common.FieldNames;
 import org.learningstorm.log.model.LogEntry;
-
 import redis.clients.jedis.Jedis;
-import backtype.storm.spout.SpoutOutputCollector;
-import backtype.storm.task.TopologyContext;
-import backtype.storm.topology.OutputFieldsDeclarer;
-import backtype.storm.topology.base.BaseRichSpout;
-import backtype.storm.tuple.Fields;
-import backtype.storm.tuple.Values;
+
+import java.util.Map;
 
 public class LogSpout extends BaseRichSpout {
+
 	private static final long serialVersionUID = -3530375171365601524L;
 
 	public static Logger LOG = Logger.getLogger(LogSpout.class);
@@ -30,7 +30,6 @@ public class LogSpout extends BaseRichSpout {
 	private SpoutOutputCollector collector;
 	
 	@SuppressWarnings("rawtypes")
-	@Override
 	public void open(Map conf, TopologyContext context,
 			SpoutOutputCollector collector) {
 		host = conf.get(Conf.REDIS_HOST_KEY).toString();
@@ -62,7 +61,6 @@ public class LogSpout extends BaseRichSpout {
 		}
 	}
 
-	@Override
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
 		declarer.declare(new Fields(FieldNames.LOG_ENTRY));
 	}
