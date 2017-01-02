@@ -1,26 +1,5 @@
 package org.learningstorm.log;
 
-import static org.junit.Assert.*;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import org.elasticsearch.action.get.GetResponse;
-import org.elasticsearch.client.Client;
-import org.elasticsearch.node.Node;
-import org.elasticsearch.node.NodeBuilder;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.learningstorm.log.bolt.IndexerBolt;
-import org.learningstorm.log.bolt.VolumeCountingBolt;
-import org.learningstorm.log.common.Conf;
-import org.learningstorm.log.common.EmbeddedCassandra;
-import org.learningstorm.log.common.UnitTestUtils;
-import org.learningstorm.log.model.LogEntry;
-
-import backtype.storm.utils.Utils;
-
 import com.netflix.astyanax.AstyanaxContext;
 import com.netflix.astyanax.Cluster;
 import com.netflix.astyanax.Keyspace;
@@ -33,8 +12,24 @@ import com.netflix.astyanax.model.Column;
 import com.netflix.astyanax.model.ColumnFamily;
 import com.netflix.astyanax.serializers.StringSerializer;
 import com.netflix.astyanax.thrift.ThriftFamilyFactory;
-
+import org.apache.storm.utils.Utils;
+import org.elasticsearch.action.get.GetResponse;
+import org.elasticsearch.client.Client;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.learningstorm.log.bolt.IndexerBolt;
+import org.learningstorm.log.bolt.VolumeCountingBolt;
+import org.learningstorm.log.common.Conf;
+import org.learningstorm.log.common.EmbeddedCassandra;
+import org.learningstorm.log.common.UnitTestUtils;
+import org.learningstorm.log.model.LogEntry;
 import redis.clients.jedis.Jedis;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.Assert.*;
 
 public class IntegerationTestTopology {
 	public static final String REDIS_CHANNEL = "TestLogBolt";
@@ -90,8 +85,8 @@ public class IntegerationTestTopology {
 	}
 
 	private static void setupElasticSearch() throws Exception {
-		Node node = NodeBuilder.nodeBuilder().local(true).node();
-		client = node.client();
+//		Node node = NodeBuilder.nodeBuilder().local(true).node();
+//		client = node.client();
 		
 		Thread.sleep(5000);
 	}

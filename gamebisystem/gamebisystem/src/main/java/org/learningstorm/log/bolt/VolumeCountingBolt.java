@@ -15,41 +15,50 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
+/**
+ * cassandra计数统计
+ */
 @SuppressWarnings("serial")
 public class VolumeCountingBolt extends BaseRichBolt {
-	public static Logger LOG = Logger.getLogger(VolumeCountingBolt.class);
-	private OutputCollector collector;
-	
-	public static final String FIELD_ROW_KEY = "RowKey";
-	public static final String FIELD_COLUMN = "Column";
-	public static final String FIELD_INCREMENT = "IncrementAmount";
-	
-	@SuppressWarnings("rawtypes")
-	@Override
-	public void prepare(Map stormConf, TopologyContext context,
-			OutputCollector collector) {
-		this.collector = collector;
-	}
+    public static Logger LOG = Logger.getLogger(VolumeCountingBolt.class);
+    private OutputCollector collector;
 
-	@Override
-	public void execute(Tuple input) {
-		LogEntry entry = (LogEntry)input.getValueByField(FieldNames.LOG_ENTRY);
-		
-		collector.emit(new Values(getMinuteForTime(entry.getTimestamp()), entry.getSource(), 1L));
-	}
+    public static final String FIELD_ROW_KEY = "RowKey";
+    public static final String FIELD_COLUMN = "Column";
+    public static final String FIELD_INCREMENT = "IncrementAmount";
 
-	public static long getMinuteForTime(Date time) {
-		Calendar c = Calendar.getInstance();
-		c.setTime(time);
-		c.set(Calendar.SECOND, 0);
-		c.set(Calendar.MILLISECOND, 0);
-		
-		return c.getTimeInMillis();
-	}
+    @SuppressWarnings("rawtypes")
+    @Override
+    public void prepare(Map stormConf, TopologyContext context,
+                        OutputCollector collector) {
+        this.collector = collector;
+    }
 
-	@Override
-	public void declareOutputFields(OutputFieldsDeclarer declarer) {
-		declarer.declare(new Fields(FIELD_ROW_KEY, FIELD_COLUMN, FIELD_INCREMENT));
-	}
+    @Override
+    public void execute(Tuple input) {
+        LogEntry entry = (LogEntry) input.getValueByField(FieldNames.LOG_ENTRY);
+
+        collector.emit(new Values(getMinuteForTime(entry.getTimestamp()), entry.getSource(), 1L));
+    }
+
+    /**
+     * 去除秒和微秒
+     *
+     * @param time
+     * @return
+     */
+    public static long getMinuteForTime(Date time) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(time);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+
+        return c.getTimeInMillis();
+    }
+
+    @Override
+    public void declareOutputFields(OutputFieldsDeclarer declarer) {
+        declarer.declare(new Fields(FIELD_ROW_KEY, FIELD_COLUMN, FIELD_INCREMENT));
+    }
 
 }
