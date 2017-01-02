@@ -16,6 +16,10 @@ import redis.clients.jedis.Jedis;
 
 import java.util.Map;
 
+/**
+ * 获取日志
+ * 发送出去
+ */
 public class LogSpout extends BaseRichSpout {
 
 	private static final long serialVersionUID = -3530375171365601524L;

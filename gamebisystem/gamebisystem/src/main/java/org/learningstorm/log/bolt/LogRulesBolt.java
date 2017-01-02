@@ -20,12 +20,16 @@ import org.learningstorm.log.model.LogEntry;
 
 import java.util.Map;
 
+/**
+ * 规则过滤
+ */
 @SuppressWarnings("deprecation")
 public class LogRulesBolt extends BaseRichBolt {
 
 	private static final long serialVersionUID = -6075680405178677002L;
 
 	public static Logger LOG = Logger.getLogger(LogRulesBolt.class);
+	//过滤
 	private StatelessKnowledgeSession ksession;
 	private OutputCollector collector;
 	
@@ -42,6 +46,7 @@ public class LogRulesBolt extends BaseRichBolt {
 		
 		KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase();
 		kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
+		//获取session
 		ksession = kbase.newStatelessKnowledgeSession();
 	}
 
@@ -51,7 +56,7 @@ public class LogRulesBolt extends BaseRichBolt {
 		if ( entry == null ) {
 			LOG.fatal("Received null or incorrect value from tuple");
 		}
-		
+		//过滤
 		ksession.execute(entry);
 		if ( !entry.isFilter() ) {
 			LOG.debug("Emitting from Rules Bolt");
@@ -61,6 +66,7 @@ public class LogRulesBolt extends BaseRichBolt {
 
 	@Override
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
+		//过滤后日志项
 		declarer.declare(new Fields(FieldNames.LOG_ENTRY));
 	}
 

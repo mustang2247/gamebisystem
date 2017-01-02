@@ -19,6 +19,10 @@ import org.json.simple.JSONObject;
 public class LogEntry {
     public static Logger LOG = Logger.getLogger(LogEntry.class);
 
+    /**
+     * 构造logentry对象
+     * @param json
+     */
     @SuppressWarnings("unchecked")
     public LogEntry(JSONObject json) {
         source = (String) json.get("@source");
@@ -171,6 +175,9 @@ public class LogEntry {
      */
     private NotificationDetails notifyAbout = null;
 
+    /**
+     * 日志格式化
+     */
     private static String[] FORMATS = new String[]{
             "yyyy-MM-dd'T'HH:mm:ss.SSS",
             "yyyy.MM.dd G 'at' HH:mm:ss z",
